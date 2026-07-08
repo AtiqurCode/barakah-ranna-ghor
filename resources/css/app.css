@@ -47,6 +47,74 @@
     }
 }
 
+/*
+|--------------------------------------------------------------------------
+| Barakah Ranna Ghor storefront theme
+|--------------------------------------------------------------------------
+| Semantic tokens scoped to `.barakah` so they never leak into the Flux
+| dashboard/auth screens. The `data-theme` attribute (toggled via Alpine)
+| flips the palette between light and dark independently of Flux's `.dark`.
+*/
+
+@theme {
+    --font-newsreader: 'Newsreader', 'Hind Siliguri', serif;
+    --font-hanken: 'Hanken Grotesk', 'Hind Siliguri', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand-bg: var(--brand-bg);
+    --color-brand-surface: var(--brand-surface);
+    --color-brand-s2: var(--brand-s2);
+    --color-brand-text: var(--brand-text);
+    --color-brand-muted: var(--brand-muted);
+    --color-brand-border: var(--brand-border);
+    --color-brand-accent: var(--brand-accent);
+    --color-brand-accent-ink: var(--brand-accent-ink);
+    --color-brand-accent-soft: var(--brand-accent-soft);
+}
+
+.barakah {
+    --brand-bg: #f6f4ef;
+    --brand-surface: #ffffff;
+    --brand-s2: #efece4;
+    --brand-text: #1c1a16;
+    --brand-muted: #726d63;
+    --brand-border: rgba(28, 26, 22, .10);
+    --brand-accent: #0f8f63;
+    --brand-accent-ink: #ffffff;
+    --brand-accent-soft: rgba(15, 143, 99, .10);
+}
+
+.barakah[data-theme="dark"] {
+    --brand-bg: #141109;
+    --brand-surface: #201c14;
+    --brand-s2: #2a251c;
+    --brand-text: #f3efe7;
+    --brand-muted: #a49e8d;
+    --brand-border: rgba(243, 239, 231, .13);
+    --brand-accent: #33c58c;
+    --brand-accent-ink: #07130d;
+    --brand-accent-soft: rgba(51, 197, 140, .14);
+}
+
+@keyframes barakah-fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes barakah-pop {
+    0% { transform: scale(.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.barakah .animate-fade-up { animation: barakah-fade-up .45s ease both; }
+.barakah .animate-pop { animation: barakah-pop .3s ease both; }
+.barakah ::selection { background: var(--brand-accent-soft); }
+
+/* Theme toggle icons: show the sun in dark mode, the moon in light mode. */
+.barakah:not([data-theme="dark"]) .theme-icon-sun { display: none; }
+.barakah[data-theme="dark"] .theme-icon-moon { display: none; }
+
+[x-cloak] { display: none !important; }
+
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }
