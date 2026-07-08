@@ -30,6 +30,14 @@ Route::get('/language/{locale}', function (string $locale) {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
+
+    Route::prefix('admin')->group(function () {
+        Route::livewire('products', 'pages::admin.products')->name('admin.products');
+        Route::livewire('products/create', 'pages::admin.product-create')->name('admin.products.create');
+        Route::livewire('products/{product}/edit', 'pages::admin.product-edit')->name('admin.products.edit');
+        Route::livewire('messages', 'pages::admin.messages')->name('admin.messages');
+        Route::livewire('subscribers', 'pages::admin.subscribers')->name('admin.subscribers');
+    });
 });
 
 require __DIR__.'/settings.php';

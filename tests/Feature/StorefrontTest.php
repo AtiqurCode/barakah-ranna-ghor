@@ -72,8 +72,9 @@ it('subscribes an email to the newsletter', function () {
 it('switches locale to Bengali and shows translated content', function () {
     $this->get(route('language.switch', 'bn'))->assertRedirect();
 
+    // Assert on seeder-controlled product names so UI copy edits don't break the test.
     $this->get(route('home'))
         ->assertOk()
-        ->assertSee('বরকত রান্নাঘর', false)
-        ->assertSee('কোল্ড-প্রেসড সরিষার তেল', false);
+        ->assertSee('কোল্ড-প্রেসড সরিষার তেল', false)
+        ->assertSee('খাঁটি গাওয়া ঘি', false);
 });

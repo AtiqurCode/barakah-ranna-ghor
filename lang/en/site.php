@@ -5,7 +5,7 @@
 return json_decode(<<<'JSON'
 {
     "brand": "Barakah Ranna Ghor",
-    "brand_sub": "Pure kitchen",
+    "brand_sub": "Pure kitchen products",
     "order_short": "Order",
     "view": "View",
     "back": "Back to products",
@@ -84,7 +84,7 @@ return json_decode(<<<'JSON'
     "c_wa_body": "Message us on WhatsApp for the fastest reply.",
     "c_wa_btn": "Chat on WhatsApp",
     "c_info": [
-        { "k": "⌂", "label": "Visit", "value": "Mirpur, Dhaka, Bangladesh" },
+        { "k": "⌂", "label": "Visit", "value": "Chapainawabganj Sadar, Rajshahi, Bangladesh" },
         { "k": "☎", "label": "Call", "value": "+880 1700-000000" },
         { "k": "@", "label": "Email", "value": "hello@barakahrannaghor.com" },
         { "k": "◷", "label": "Hours", "value": "Sat–Thu, 9am–9pm" }
@@ -99,7 +99,7 @@ return json_decode(<<<'JSON'
     "f_col_explore": "Explore",
     "f_col_shop": "Products",
     "f_bottom": "© 2026 Barakah Ranna Ghor. All rights reserved.",
-    "f_made": "Made with barakah in Dhaka.",
+    "f_made": "Made with barakah in Rajshahi.",
 
     "whatsapp": {
         "greeting": "Assalamu alaikum! I have a question...",

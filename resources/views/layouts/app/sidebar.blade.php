@@ -16,6 +16,21 @@
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                <flux:sidebar.group :heading="__('Store')" class="grid">
+                    <flux:sidebar.item icon="shopping-bag" :href="route('admin.products')" :current="request()->routeIs('admin.products*')" wire:navigate>
+                        {{ __('Products') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="chat-bubble-left-right" :href="route('admin.messages')" :current="request()->routeIs('admin.messages')" wire:navigate>
+                        {{ __('Messages') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="envelope" :href="route('admin.subscribers')" :current="request()->routeIs('admin.subscribers')" wire:navigate>
+                        {{ __('Subscribers') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="globe-alt" :href="route('home')" target="_blank">
+                        {{ __('View store') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:spacer />
