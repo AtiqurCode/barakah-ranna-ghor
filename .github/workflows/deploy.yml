@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       protocol:
-        description: Connection protocol (try ftp if ftps fails)
+        description: Connection protocol (use ftp for most cPanel hosts)
         type: choice
         options:
-          - ftps
           - ftp
+          - ftps
           - ftps-legacy
-        default: ftps
+        default: ftp
       port:
         description: FTP port
         default: '21'
@@ -63,49 +63,79 @@ jobs:
           touch storage/framework/views/.gitkeep
           touch storage/logs/.gitkeep
 
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
       - name: Deploy to cPanel via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ github.event_name == 'workflow_dispatch' && inputs.port || 21 }}
-          protocol: ${{ github.event_name == 'workflow_dispatch' && inputs.protocol || 'ftps' }}
-          security: loose
-          timeout: 600000
-          log-level: verbose
-          local-dir: ./
-          server-dir: /
-          exclude: |
-            **/.git*
-            **/.git/**
-            **/.github/**
-            **/.cursor/**
-            **/.claude/**
-            **/AGENTS.md
-            **/CLAUDE.md
-            **/boost.json
-            **/node_modules/**
-            **/tests/**
-            **/database/*.sqlite*
-            **/.env
-            **/auth.json
-            **/.phpunit.cache/**
-            **/.phpunit.result.cache
-            **/phpunit.xml
-            **/.idea/**
-            **/.vscode/**
-            **/.fleet/**
-            **/.nova/**
-            **/.zed/**
-            **/Homestead.json
-            **/Homestead.yaml
-            **/npm-debug.log
-            **/yarn-error.log
-            **/storage/pail/**
-            **/public/hot
-            **/public/storage
-            **/vendor/**/tests/**
-            **/vendor/**/Tests/**
-            **/vendor/**/test/**
-            **/vendor/**/docs/**
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_REMOTE_DIR: ${{ secrets.FTP_REMOTE_DIR }}
+          FTP_PROTOCOL: ${{ github.event_name == 'workflow_dispatch' && inputs.protocol || 'ftp' }}
+          FTP_PORT: ${{ github.event_name == 'workflow_dispatch' && inputs.port || '21' }}
+        run: |
+          REMOTE_DIR="${FTP_REMOTE_DIR:-/}"
+
+          if [ "$FTP_PROTOCOL" = "ftps" ]; then
+            SSL_ALLOW="yes"
+            SSL_FORCE="no"
+          elif [ "$FTP_PROTOCOL" = "ftps-legacy" ]; then
+            SSL_ALLOW="yes"
+            SSL_FORCE="yes"
+          else
+            SSL_ALLOW="no"
+            SSL_FORCE="no"
+          fi
+
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -p "$FTP_PORT" "$FTP_SERVER" <<EOF
+          set ftp:passive-mode true
+          set ftp:ssl-allow $SSL_ALLOW
+          set ftp:ssl-force $SSL_FORCE
+          set ftp:use-feat no
+          set ftp:epsv4 no
+          set ssl:verify-certificate no
+          set net:timeout 120
+          set net:max-retries 10
+          set net:reconnect-interval-base 5
+          set cmd:fail-exit yes
+          mirror -R --verbose --parallel=1 --only-newer \
+            --exclude-glob .git/ \
+            --exclude-glob .git/** \
+            --exclude-glob .github/ \
+            --exclude-glob .github/** \
+            --exclude-glob .cursor/ \
+            --exclude-glob .cursor/** \
+            --exclude-glob .claude/ \
+            --exclude-glob .claude/** \
+            --exclude-glob AGENTS.md \
+            --exclude-glob CLAUDE.md \
+            --exclude-glob boost.json \
+            --exclude-glob node_modules/ \
+            --exclude-glob node_modules/** \
+            --exclude-glob tests/ \
+            --exclude-glob tests/** \
+            --exclude-glob .env \
+            --exclude-glob auth.json \
+            --exclude-glob phpunit.xml \
+            --exclude-glob .phpunit.cache/ \
+            --exclude-glob .phpunit.result.cache \
+            --exclude-glob .idea/ \
+            --exclude-glob .vscode/ \
+            --exclude-glob .fleet/ \
+            --exclude-glob .nova/ \
+            --exclude-glob .zed/ \
+            --exclude-glob Homestead.json \
+            --exclude-glob Homestead.yaml \
+            --exclude-glob npm-debug.log \
+            --exclude-glob yarn-error.log \
+            --exclude-glob storage/pail/ \
+            --exclude-glob public/hot \
+            --exclude-glob public/storage \
+            --exclude-glob vendor/**/tests/ \
+            --exclude-glob vendor/**/Tests/ \
+            --exclude-glob vendor/**/test/ \
+            --exclude-glob vendor/**/docs/ \
+            ./ $REMOTE_DIR
+          bye
+          EOF
