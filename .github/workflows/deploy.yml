@@ -18,20 +18,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          tools: composer:v2
-
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: npm
-
-      - name: Install PHP Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
       - name: Install Node Dependencies
         run: npm ci
@@ -67,6 +58,7 @@ jobs:
             **/CLAUDE.md
             **/boost.json
             **/node_modules/**
+            **/vendor/**
             **/tests/**
             **/database/*.sqlite*
             **/.env
@@ -86,3 +78,18 @@ jobs:
             **/storage/pail/**
             **/public/hot
             **/public/storage
+
+      - name: Install PHP dependencies on server
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd "${{ secrets.SSH_APP_PATH || '.' }}"
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            php artisan package:discover --ansi || true
+            php artisan config:cache || true
+            php artisan route:cache || true
+            php artisan view:cache || true
