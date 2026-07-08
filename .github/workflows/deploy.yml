@@ -2,6 +2,18 @@ name: deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      protocol:
+        description: Connection protocol (try ftp if ftps fails)
+        type: choice
+        options:
+          - ftps
+          - ftp
+          - ftps-legacy
+        default: ftps
+      port:
+        description: FTP port
+        default: '21'
   push:
     branches:
       - master
@@ -13,6 +25,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
 
     steps:
       - name: Checkout code
@@ -51,13 +64,16 @@ jobs:
           touch storage/logs/.gitkeep
 
       - name: Deploy to cPanel via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          protocol: ftps
+          port: ${{ github.event_name == 'workflow_dispatch' && inputs.port || 21 }}
+          protocol: ${{ github.event_name == 'workflow_dispatch' && inputs.protocol || 'ftps' }}
+          security: loose
+          timeout: 600000
+          log-level: verbose
           local-dir: ./
           server-dir: /
           exclude: |
@@ -89,3 +105,7 @@ jobs:
             **/storage/pail/**
             **/public/hot
             **/public/storage
+            **/vendor/**/tests/**
+            **/vendor/**/Tests/**
+            **/vendor/**/test/**
+            **/vendor/**/docs/**
