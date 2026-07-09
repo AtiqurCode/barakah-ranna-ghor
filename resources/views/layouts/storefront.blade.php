@@ -38,7 +38,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-brand-bg font-hanken text-brand-text antialiased transition-colors">
+<body class="min-h-screen overflow-x-hidden bg-brand-bg font-hanken text-brand-text antialiased transition-colors">
     <x-storefront.header />
 
     <main class="animate-fade-up">

@@ -105,9 +105,67 @@
     100% { transform: scale(1); opacity: 1; }
 }
 
+/* Lazy-image loading placeholder: an animated shimmer shown until the
+   image's load event fires (see <x-lazy-img>). Works in the Flux dark
+   admin (.dark) and the storefront (.barakah) alike. */
+@keyframes barakah-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.lazy-shimmer {
+    background: linear-gradient(90deg, #e7e5e0 25%, #f4f2ee 37%, #e7e5e0 63%);
+    background-size: 200% 100%;
+    animation: barakah-shimmer 1.4s ease-in-out infinite;
+}
+
+.dark .lazy-shimmer {
+    background: linear-gradient(90deg, #27272a 25%, #3f3f46 37%, #27272a 63%);
+    background-size: 200% 100%;
+    animation: barakah-shimmer 1.4s ease-in-out infinite;
+}
+
+.barakah .lazy-shimmer {
+    background: linear-gradient(90deg, var(--brand-s2) 25%, color-mix(in srgb, var(--brand-muted) 20%, var(--brand-s2)) 37%, var(--brand-s2) 63%);
+    background-size: 200% 100%;
+    animation: barakah-shimmer 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lazy-shimmer,
+    .dark .lazy-shimmer,
+    .barakah .lazy-shimmer { animation: none; }
+}
+
 .barakah .animate-fade-up { animation: barakah-fade-up .45s ease both; }
 .barakah .animate-pop { animation: barakah-pop .3s ease both; }
 .barakah ::selection { background: var(--brand-accent-soft); }
+
+/* Consistent button hover/press feel across the storefront. Add `.btn-press`
+   to any button/CTA; add `.btn-glow` on accent (primary) buttons for a lift
+   with a coloured shadow. */
+.barakah .btn-press {
+    transition: transform .2s cubic-bezier(.2, .8, .2, 1), box-shadow .22s ease, filter .2s ease, border-color .2s ease, color .2s ease, background-color .2s ease;
+    will-change: transform;
+}
+.barakah .btn-press:hover { transform: translateY(-2px); }
+.barakah .btn-press:active { transform: translateY(0) scale(.96); }
+
+.barakah .btn-glow:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 12px 26px -10px var(--brand-accent);
+}
+
+/* Icon-only buttons: gentle scale instead of a lift. */
+.barakah .btn-tap { transition: transform .18s ease, border-color .2s ease, color .2s ease, background-color .2s ease; }
+.barakah .btn-tap:hover { transform: scale(1.06); }
+.barakah .btn-tap:active { transform: scale(.94); }
+
+@media (prefers-reduced-motion: reduce) {
+    .barakah .btn-press, .barakah .btn-tap { transition: border-color .2s ease, color .2s ease; }
+    .barakah .btn-press:hover, .barakah .btn-press:active,
+    .barakah .btn-tap:hover, .barakah .btn-tap:active { transform: none; }
+}
 
 /* Theme toggle icons: show the sun in dark mode, the moon in light mode. */
 .barakah:not([data-theme="dark"]) .theme-icon-sun { display: none; }

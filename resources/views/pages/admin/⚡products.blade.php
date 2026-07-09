@@ -58,7 +58,7 @@ new #[Layout('layouts.app')] #[Title('Products')] class extends Component
                 <flux:table.row :key="$product->id">
                     <flux:table.cell>
                         <div class="flex items-center gap-3">
-                            <img src="{{ $product->image_url }}" alt="" class="size-10 rounded-lg object-cover">
+                            <x-lazy-img :src="$product->image_url" alt="" class="size-10 shrink-0 rounded-lg" />
                             <div>
                                 <div class="font-medium">{{ $product->name['en'] ?? '' }}</div>
                                 <div class="text-xs text-zinc-500">{{ $product->name['bn'] ?? '' }}</div>

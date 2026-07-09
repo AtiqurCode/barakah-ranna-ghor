@@ -38,28 +38,28 @@ new #[Layout('layouts.storefront')] class extends Component
         </a>
     </section>
 
-    <section class="mx-auto grid max-w-[1180px] grid-cols-1 items-start gap-[52px] px-6 pt-6 lg:grid-cols-2">
+    <section class="mx-auto grid max-w-[1180px] grid-cols-1 items-start gap-8 px-6 pt-6 lg:grid-cols-2 lg:gap-[52px]">
         <div class="overflow-hidden rounded-[22px] border border-brand-border bg-brand-s2 lg:sticky lg:top-[90px]">
             <div class="aspect-square">
-                <img src="{{ $product->image_url }}" alt="{{ $product->translate('name') }}" class="size-full object-cover">
+                <x-lazy-img :src="$product->image_url" :alt="$product->translate('name')" class="size-full" eager />
             </div>
         </div>
 
         <div>
             <span class="inline-block rounded-full bg-brand-accent-soft px-3 py-[5px] text-xs font-semibold text-brand-accent">{{ $product->categoryLabel() }}</span>
-            <h1 class="mb-2 mt-4 font-newsreader text-[46px] font-normal leading-[1.05] -tracking-[.01em]">{{ $product->translate('name') }}</h1>
-            <p class="text-[17px] text-brand-muted">{{ $product->translate('tag') }}</p>
+            <h1 class="mb-2 mt-4 font-newsreader text-[32px] font-normal leading-[1.08] -tracking-[.01em] sm:text-[46px] sm:leading-[1.05]">{{ $product->translate('name') }}</h1>
+            <p class="text-[16px] text-brand-muted sm:text-[17px]">{{ $product->translate('tag') }}</p>
 
             <div class="my-6 flex items-baseline gap-1.5">
-                <span class="text-[34px] font-semibold">{{ $product->priceLabel() }}</span>
+                <span class="text-[28px] font-semibold sm:text-[34px]">{{ $product->priceLabel() }}</span>
                 <span class="text-base text-brand-muted">{{ $product->translate('unit') }}</span>
             </div>
 
             <div class="flex flex-wrap gap-3">
-                <a href="{{ $orderLink }}" target="_blank" rel="noopener" class="flex h-[54px] min-w-[200px] flex-1 items-center justify-center gap-2.5 rounded-[13px] bg-brand-accent text-[15.5px] font-semibold text-brand-accent-ink transition hover:brightness-105">
-                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1 3.6-11.3 8.4 8.4 0 0 1 12.5 7.5z" /></svg>{{ __('site.order') }}
+                <a href="{{ $orderLink }}" target="_blank" rel="noopener" class="btn-press btn-glow flex h-[54px] min-w-[200px] flex-1 items-center justify-center gap-2.5 rounded-[13px] bg-brand-accent text-[15.5px] font-semibold text-brand-accent-ink">
+                    <x-icon.whatsapp class="size-[19px]" />{{ __('site.order') }}
                 </a>
-                <a href="{{ $chatLink }}" target="_blank" rel="noopener" class="flex h-[54px] items-center justify-center rounded-[13px] border border-brand-border bg-brand-surface px-[22px] text-[15px] font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent">{{ __('site.pd_chat') }}</a>
+                <a href="{{ $chatLink }}" target="_blank" rel="noopener" class="btn-press flex h-[54px] flex-1 items-center justify-center rounded-[13px] border border-brand-border bg-brand-surface px-[22px] text-[15px] font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent sm:flex-none">{{ __('site.pd_chat') }}</a>
             </div>
 
             <div class="mt-[34px] border-t border-brand-border pt-[26px]">
@@ -82,7 +82,7 @@ new #[Layout('layouts.storefront')] class extends Component
 
     {{-- Related --}}
     <section class="mx-auto max-w-[1180px] px-6 pb-[76px] pt-16">
-        <h2 class="mb-6 font-newsreader text-[32px] font-normal -tracking-[.01em]">{{ __('site.pd_related') }}</h2>
+        <h2 class="mb-6 font-newsreader text-[26px] font-normal -tracking-[.01em] sm:text-[32px]">{{ __('site.pd_related') }}</h2>
         <div class="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($related as $item)
                 <x-storefront.product-card :product="$item" compact />

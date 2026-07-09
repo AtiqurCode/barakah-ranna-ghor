@@ -38,7 +38,7 @@ new class extends Component
             >
             <button
                 type="submit"
-                class="h-[46px] whitespace-nowrap rounded-[11px] bg-brand-accent px-[18px] text-sm font-semibold text-brand-accent-ink transition hover:brightness-105"
+                class="btn-press btn-glow h-[46px] whitespace-nowrap rounded-[11px] bg-brand-accent px-[18px] text-sm font-semibold text-brand-accent-ink"
             >
                 {{ __('site.f_sub_btn') }}
             </button>

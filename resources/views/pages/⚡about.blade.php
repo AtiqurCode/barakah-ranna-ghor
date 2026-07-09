@@ -14,12 +14,12 @@ new #[Layout('layouts.storefront')] class extends Component
     <section class="mx-auto grid max-w-[1180px] grid-cols-1 items-center gap-[52px] px-6 pt-16 lg:grid-cols-2">
         <div>
             <span class="text-xs font-semibold uppercase tracking-[.16em] text-brand-accent">{{ __('site.about_kicker') }}</span>
-            <h1 class="mb-[18px] mt-3.5 font-newsreader text-[50px] font-normal leading-[1.04] -tracking-[.01em] text-balance">{{ __('site.about_title') }}</h1>
-            <p class="mb-4 text-base leading-[1.7] text-brand-muted text-pretty">{{ __('site.about_body1') }}</p>
-            <p class="text-base leading-[1.7] text-brand-muted text-pretty">{{ __('site.about_body2') }}</p>
+            <h1 class="mb-[18px] mt-3.5 font-newsreader text-[34px] font-normal leading-[1.08] -tracking-[.01em] text-balance sm:text-[50px] sm:leading-[1.04]">{{ __('site.about_title') }}</h1>
+            <p class="mb-4 text-[15px] leading-[1.7] text-brand-muted text-pretty sm:text-base">{{ __('site.about_body1') }}</p>
+            <p class="text-[15px] leading-[1.7] text-brand-muted text-pretty sm:text-base">{{ __('site.about_body2') }}</p>
         </div>
         <div class="aspect-[4/5] overflow-hidden rounded-[22px] border border-brand-border bg-brand-s2">
-            <img src="{{ \App\Models\Product::where('slug', 'ghee')->value('image_url') }}" alt="{{ __('site.about_img') }}" class="size-full object-cover">
+            <x-lazy-img :src="\App\Models\Product::where('slug', 'ghee')->value('image_url')" :alt="__('site.about_img')" class="size-full" eager />
         </div>
     </section>
 
@@ -28,7 +28,7 @@ new #[Layout('layouts.storefront')] class extends Component
         <div class="grid grid-cols-2 gap-[22px] border-y border-brand-border py-10 lg:grid-cols-4">
             @foreach (__('site.stats') as $stat)
                 <div>
-                    <div class="font-newsreader text-[46px] font-normal leading-none text-brand-accent">{{ \App\Support\Digits::localize($stat['n']) }}</div>
+                    <div class="font-newsreader text-[34px] font-normal leading-none text-brand-accent sm:text-[46px]">{{ \App\Support\Digits::localize($stat['n']) }}</div>
                     <div class="mt-2 text-sm font-medium text-brand-muted">{{ $stat['l'] }}</div>
                 </div>
             @endforeach
@@ -52,9 +52,9 @@ new #[Layout('layouts.storefront')] class extends Component
 
     {{-- Mission --}}
     <section class="mx-auto mb-[76px] max-w-[1180px] px-6">
-        <div class="rounded-[24px] bg-brand-s2 px-8 py-14 text-center">
+        <div class="rounded-[24px] bg-brand-s2 px-6 py-12 text-center sm:px-8 sm:py-14">
             <span class="text-xs font-semibold uppercase tracking-[.16em] text-brand-accent">{{ __('site.mission_title') }}</span>
-            <p class="mx-auto mt-4 max-w-[640px] font-newsreader text-[30px] leading-[1.35] text-balance">{{ __('site.mission_body') }}</p>
+            <p class="mx-auto mt-4 max-w-[640px] font-newsreader text-[22px] leading-[1.4] text-balance sm:text-[30px] sm:leading-[1.35]">{{ __('site.mission_body') }}</p>
         </div>
     </section>
 </div>
