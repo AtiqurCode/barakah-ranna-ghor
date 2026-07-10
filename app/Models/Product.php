@@ -13,7 +13,22 @@ class Product extends Model
     /** @use HasFactory<ProductFactory> */
     use HasFactory;
 
-    protected $guarded = [];
+    /**
+     * @var list<string>
+     */
+    protected $fillable = [
+        'slug',
+        'category',
+        'price',
+        'image_url',
+        'sort_order',
+        'is_featured',
+        'name',
+        'tag',
+        'unit',
+        'description',
+        'details',
+    ];
 
     /**
      * @return array<string, string>

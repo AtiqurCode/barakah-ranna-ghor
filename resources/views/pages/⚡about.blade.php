@@ -25,7 +25,7 @@ new #[Layout('layouts.storefront')] class extends Component
 
     {{-- Stats --}}
     <section class="mx-auto max-w-[1180px] px-6 py-[60px]">
-        <div class="grid grid-cols-2 gap-[22px] border-y border-brand-border py-10 lg:grid-cols-4">
+        <div class="grid grid-cols-2 gap-[22px] border-y border-brand-border py-10 md:grid-cols-4">
             @foreach (__('site.stats') as $stat)
                 <div>
                     <div class="font-newsreader text-[34px] font-normal leading-none text-brand-accent sm:text-[46px]">{{ \App\Support\Digits::localize($stat['n']) }}</div>

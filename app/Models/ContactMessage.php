@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContactMessage extends Model
 {
-    protected $guarded = [];
+    /**
+     * @var list<string>
+     */
+    protected $fillable = ['name', 'phone', 'message'];
 }

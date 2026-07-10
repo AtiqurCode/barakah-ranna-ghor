@@ -8,12 +8,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{-- Apply the saved theme before paint to avoid a flash. --}}
+    {{-- Apply the saved theme before first paint, and re-apply after every
+         Livewire (wire:navigate) page swap so dark mode persists across routes. --}}
     <script>
-        document.documentElement.setAttribute(
-            'data-theme',
-            localStorage.getItem('barakah-theme') || 'light'
-        );
+        window.applyBarakahTheme = function () {
+            document.documentElement.setAttribute(
+                'data-theme',
+                localStorage.getItem('barakah-theme') || 'light'
+            );
+        };
+        window.applyBarakahTheme();
+        document.addEventListener('livewire:navigated', window.applyBarakahTheme);
     </script>
 
     @php

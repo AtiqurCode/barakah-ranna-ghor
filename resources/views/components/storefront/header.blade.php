@@ -18,11 +18,12 @@
 >
     <div class="mx-auto flex h-[70px] max-w-[1180px] items-center justify-between gap-4 px-6">
         {{-- Brand --}}
-        <a href="{{ route('home') }}" wire:navigate class="flex items-center gap-[11px]">
+        <a href="{{ route('home') }}" wire:navigate class="flex min-w-0 items-center gap-[11px]">
             <x-brand-logo class="size-9 flex-none" />
-            <span class="flex flex-col items-start leading-none">
-                <span class="whitespace-nowrap text-base font-semibold -tracking-[.01em]">{{ __('site.brand') }}</span>
-                <span class="mt-1 hidden whitespace-nowrap text-[9.5px] font-semibold uppercase tracking-[.16em] text-brand-muted sm:block">{{ __('site.brand_sub') }}</span>
+            {{-- Brand name is hidden on mobile; the logo alone represents the brand there. --}}
+            <span class="hidden min-w-0 flex-col items-start leading-none sm:flex">
+                <span class="truncate text-base font-semibold -tracking-[.01em]">{{ __('site.brand') }}</span>
+                <span class="mt-1 hidden truncate text-[9.5px] font-semibold uppercase tracking-[.16em] text-brand-muted md:block">{{ __('site.brand_sub') }}</span>
             </span>
         </a>
 

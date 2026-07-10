@@ -2,26 +2,48 @@
 
 use App\Models\ContactMessage;
 use App\Support\WhatsApp;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 new #[Layout('layouts.storefront')] class extends Component
 {
-    #[Validate('required|string|max:255')]
+    #[Validate('required|string|min:2|max:255')]
     public string $name = '';
 
-    #[Validate('required|string|max:50')]
+    #[Validate(['required', 'string', 'max:30', 'regex:/^[0-9+\-\s()]{6,30}$/'])]
     public string $phone = '';
 
-    #[Validate('required|string|max:2000')]
+    #[Validate('required|string|min:5|max:2000')]
     public string $message = '';
+
+    /** Honeypot — must stay empty for real users. */
+    public string $website = '';
 
     public bool $sent = false;
 
     public function submit(): void
     {
+        // Silently absorb bot submissions that fill the hidden honeypot.
+        if ($this->website !== '') {
+            $this->sent = true;
+
+            return;
+        }
+
+        $key = 'contact:'.request()->ip();
+
+        if (RateLimiter::tooManyAttempts($key, maxAttempts: 5)) {
+            throw ValidationException::withMessages([
+                'message' => __('Too many messages sent. Please try again later.'),
+            ]);
+        }
+
         $validated = $this->validate();
+
+        RateLimiter::hit($key, decaySeconds: 300);
 
         ContactMessage::create($validated);
 
@@ -61,6 +83,9 @@ new #[Layout('layouts.storefront')] class extends Component
                     </div>
                 @else
                     <form wire:submit="submit" class="flex flex-col gap-4">
+                        {{-- Honeypot: hidden from users, tempting to bots. --}}
+                        <input type="text" wire:model="website" name="website" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true">
+
                         <label class="flex flex-col gap-[7px] text-[13px] font-semibold">{{ __('site.c_name') }}
                             <input type="text" wire:model="name" class="h-12 rounded-[11px] border border-brand-border bg-brand-bg px-3.5 text-[15px] text-brand-text outline-none focus:border-brand-accent">
                             @error('name') <span class="text-xs font-normal text-red-500">{{ $message }}</span> @enderror

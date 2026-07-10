@@ -7,11 +7,20 @@ use App\Models\User;
 use Livewire\Livewire;
 
 beforeEach(function () {
-    $this->admin = User::factory()->create(['email_verified_at' => now()]);
+    $this->admin = User::factory()->admin()->create();
 });
 
 it('blocks guests from the admin area', function () {
     $this->get(route('admin.products'))->assertRedirect(route('login'));
+});
+
+it('forbids non-admin authenticated users from the admin area', function () {
+    $user = User::factory()->create(); // verified but not an admin
+
+    $this->actingAs($user)->get(route('admin.products'))->assertForbidden();
+    $this->actingAs($user)->get(route('admin.messages'))->assertForbidden();
+    $this->actingAs($user)->get(route('admin.subscribers'))->assertForbidden();
+    $this->actingAs($user)->get(route('admin.products.create'))->assertForbidden();
 });
 
 it('lists products for an authenticated user', function () {
