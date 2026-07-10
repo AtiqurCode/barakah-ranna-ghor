@@ -1,0 +1,38 @@
+# Local LLM stack for the Barakah product-advisor chatbot.
+#
+# The Laravel app itself runs on Herd (native PHP), so it reaches Ollama at
+# http://localhost:11434 — set OLLAMA_URL in .env to match.
+#
+#   docker compose up -d          # start Ollama and pull the model
+#   docker compose logs -f ollama-pull   # watch the one-time model download
+#   curl http://localhost:11434/api/tags # confirm the model is available
+services:
+    ollama:
+        image: ollama/ollama:latest
+        container_name: barakah-ollama
+        ports:
+            - "11434:11434"
+        volumes:
+            - ollama-data:/root/.ollama
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "ollama", "list"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    # One-shot: pulls the configured model into the shared volume, then exits.
+    ollama-pull:
+        image: ollama/ollama:latest
+        depends_on:
+            ollama:
+                condition: service_healthy
+        environment:
+            - OLLAMA_HOST=ollama:11434
+            - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen2.5:3b}
+        entrypoint: ["/bin/sh", "-c", "ollama pull \"$${OLLAMA_MODEL}\""]
+        restart: "no"
+
+volumes:
+    ollama-data:
+        driver: local

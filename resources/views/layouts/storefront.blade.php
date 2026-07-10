@@ -53,5 +53,7 @@
     <x-storefront.footer />
 
     <x-storefront.floating-whatsapp />
+
+    <livewire:product-chat />
 </body>
 </html>

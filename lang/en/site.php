@@ -101,6 +101,18 @@ return json_decode(<<<'JSON'
     "f_bottom": "© 2026 Barakah Ranna Ghor. All rights reserved.",
     "f_made": "Made with barakah in Rajshahi.",
 
+    "chat": {
+        "launcher": "Ask our product guide",
+        "title": "Product guide",
+        "subtitle": "Ask which product suits you",
+        "greeting": "Assalamu alaikum! Tell me what you cook or what you need, and I’ll suggest the best product for you.",
+        "placeholder": "Ask about a product…",
+        "send": "Send",
+        "close": "Close",
+        "error": "Sorry, I couldn’t answer just now. Please try again, or message us on WhatsApp.",
+        "rate_limited": "You’re sending messages too quickly. Please wait a moment."
+    },
+
     "whatsapp": {
         "greeting": "Assalamu alaikum! I have a question...",
         "order_prefix": "Assalamu alaikum, I’d like to order: "
