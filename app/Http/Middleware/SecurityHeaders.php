@@ -57,14 +57,26 @@ class SecurityHeaders
      */
     private function contentSecurityPolicy(Request $request): string
     {
+        $viteOrigin = $this->viteDevServerOrigin();
+        $reverbOrigin = $this->reverbDevServerOrigin();
+
+        $connectSrc = array_filter([
+            "'self'",
+            $viteOrigin,
+            $viteOrigin ? $this->toWebSocketOrigin($viteOrigin) : null,
+            $reverbOrigin,
+        ]);
+
         $directives = [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval'".($viteOrigin ? " {$viteOrigin}" : ''),
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com".($viteOrigin ? " {$viteOrigin}" : ''),
             "font-src 'self' https://fonts.gstatic.com data:",
             "img-src 'self' data: https:",
-            "connect-src 'self'",
-            "form-action 'self'",
+            'connect-src '.implode(' ', $connectSrc),
+            // Stripe Checkout redirects the browser to its own hosted payment
+            // page; form-action must allow that target or the redirect is blocked.
+            "form-action 'self' https://checkout.stripe.com",
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "object-src 'none'",
@@ -77,5 +89,51 @@ class SecurityHeaders
         }
 
         return implode('; ', $directives);
+    }
+
+    /**
+     * Resolve the running Vite dev server's origin so its cross-origin
+     * script/style/HMR requests aren't blocked by the CSP in local
+     * development. Returns null in any non-local environment or when
+     * the dev server isn't running (no "public/hot" file).
+     */
+    private function viteDevServerOrigin(): ?string
+    {
+        if (! app()->environment('local')) {
+            return null;
+        }
+
+        if (! is_file(public_path('hot'))) {
+            return null;
+        }
+
+        return rtrim(trim(file_get_contents(public_path('hot'))), '/');
+    }
+
+    private function toWebSocketOrigin(string $origin): string
+    {
+        return preg_replace('/^http/', 'ws', $origin);
+    }
+
+    /**
+     * Resolve the local Reverb broadcasting server's websocket origin so
+     * Laravel Echo's connection isn't blocked by the CSP in local
+     * development. Returns null in any non-local environment.
+     */
+    private function reverbDevServerOrigin(): ?string
+    {
+        if (! app()->environment('local')) {
+            return null;
+        }
+
+        $options = config('broadcasting.connections.reverb.options', []);
+
+        if (empty($options['host'])) {
+            return null;
+        }
+
+        $scheme = ($options['scheme'] ?? 'https') === 'https' ? 'wss' : 'ws';
+
+        return "{$scheme}://{$options['host']}:{$options['port']}";
     }
 }
