@@ -89,7 +89,7 @@ new class extends Component
         new MutationObserver(() => { if ($refs.scroll) $refs.scroll.scrollTop = $refs.scroll.scrollHeight })
             .observe($refs.scroll, { childList: true, subtree: true, characterData: true });
     "
-    class="fixed bottom-[84px] right-5 z-[80] sm:bottom-[88px] sm:right-6"
+    class="fixed bottom-20 right-5 z-80 sm:right-6"
 >
     {{-- Launcher --}}
     <button
@@ -98,7 +98,7 @@ new class extends Component
         x-on:click="open = true"
         title="{{ __('site.chat.launcher') }}"
         aria-label="{{ __('site.chat.launcher') }}"
-        class="btn-tap grid size-[54px] place-items-center rounded-full bg-brand-accent text-brand-accent-ink shadow-[0_12px_30px_-8px_rgba(0,0,0,.5)] sm:size-[58px]"
+        class="btn-tap grid size-14 place-items-center rounded-full bg-brand-accent text-brand-accent-ink shadow-lg sm:size-14"
     >
         <x-icon.chat class="size-7" />
     </button>
@@ -108,7 +108,7 @@ new class extends Component
         x-show="open"
         x-cloak
         x-transition.origin.bottom.right
-        class="flex h-[70vh] max-h-[560px] w-[calc(100vw-2.5rem)] max-w-[380px] flex-col overflow-hidden rounded-[20px] border border-brand-border bg-brand-surface shadow-[0_30px_60px_-25px_rgba(0,0,0,.55)]"
+        class="flex h-3/4 w-11/12 max-w-sm flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface shadow-2xl"
     >
         {{-- Header --}}
         <div class="flex items-center justify-between gap-3 border-b border-brand-border bg-brand-s2 px-4 py-3">
