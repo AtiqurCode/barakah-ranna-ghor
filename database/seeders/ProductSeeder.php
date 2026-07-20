@@ -40,7 +40,7 @@ class ProductSeeder extends Seeder
             [
                 'slug' => 'mustard-oil',
                 'category' => 'oils',
-                'price' => 320,
+                'price' => 15,
                 'is_featured' => true,
                 'image_url' => 'Mustard Oil & Seeds - Kolkata 2003-10-31 00537.JPG',
                 'name' => ['en' => 'Cold-Pressed Mustard Oil', 'bn' => 'কোল্ড-প্রেসড সরিষার তেল'],
@@ -58,7 +58,7 @@ class ProductSeeder extends Seeder
             [
                 'slug' => 'ghee',
                 'category' => 'dairy',
-                'price' => 950,
+                'price' => 25,
                 'is_featured' => true,
                 'image_url' => 'Pure Ghee-Homemade-Maharashtra.jpg',
                 'name' => ['en' => 'Pure Cow Ghee', 'bn' => 'খাঁটি গাওয়া ঘি'],
@@ -76,7 +76,7 @@ class ProductSeeder extends Seeder
             [
                 'slug' => 'honey',
                 'category' => 'sweeteners',
-                'price' => 700,
+                'price' => 21,
                 'is_featured' => true,
                 'image_url' => 'Honey comb.jpg',
                 'name' => ['en' => 'Wild Natural Honey', 'bn' => 'প্রাকৃতিক মধু'],
@@ -94,7 +94,7 @@ class ProductSeeder extends Seeder
             [
                 'slug' => 'date-molasses',
                 'category' => 'sweeteners',
-                'price' => 450,
+                'price' => 18,
                 'is_featured' => false,
                 'image_url' => 'An image of jaggery powder.JPG',
                 'name' => ['en' => 'Date Molasses (Khejur Gur)', 'bn' => 'খেজুরের গুড়'],
@@ -112,7 +112,7 @@ class ProductSeeder extends Seeder
             [
                 'slug' => 'turmeric',
                 'category' => 'spices',
-                'price' => 180,
+                'price' => 10,
                 'is_featured' => false,
                 'image_url' => 'Turmeric-powder.jpg',
                 'name' => ['en' => 'Stone-Ground Turmeric', 'bn' => 'হলুদ গুঁড়া'],
@@ -130,7 +130,7 @@ class ProductSeeder extends Seeder
             [
                 'slug' => 'chili',
                 'category' => 'spices',
-                'price' => 200,
+                'price' => 12,
                 'is_featured' => false,
                 'image_url' => 'Red chilli powder.jpg',
                 'name' => ['en' => 'Red Chili Powder', 'bn' => 'মরিচ গুঁড়া'],

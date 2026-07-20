@@ -31,7 +31,7 @@ it('grounds the agent with the localized product catalogue', function () {
 
         return $prompt->contains('Which oil is best for frying?')
             && str_contains($instructions, 'Cold-Pressed Mustard Oil')
-            && str_contains($instructions, '৳320');
+            && str_contains($instructions, '$15');
     });
 });
 
@@ -125,7 +125,7 @@ it('builds a Bengali system prompt with localized names and prices', function ()
 
     expect($instructions)
         ->toContain('কোল্ড-প্রেসড সরিষার তেল')
-        ->toContain('৳৩২০');
+        ->toContain('$১৫');
 
     // The app locale must be restored afterwards.
     expect(app()->getLocale())->toBe(config('app.locale'));
