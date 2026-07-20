@@ -55,11 +55,17 @@ new #[Layout('layouts.storefront')] class extends Component
                 <span class="text-base text-brand-muted">{{ $product->translate('unit') }}</span>
             </div>
 
-            <div class="flex flex-wrap gap-3">
-                <a href="{{ $orderLink }}" target="_blank" rel="noopener" class="btn-press btn-glow flex h-[54px] min-w-[200px] flex-1 items-center justify-center gap-2.5 rounded-[13px] bg-brand-accent text-[15.5px] font-semibold text-brand-accent-ink">
+            <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <form action="{{ route('checkout.store', $product) }}" method="POST" class="min-w-[200px] flex-1">
+                    @csrf
+                    <button type="submit" class="btn-press btn-glow flex h-[54px] w-full items-center justify-center rounded-[13px] bg-brand-accent text-[15.5px] font-semibold text-brand-accent-ink">
+                        Buy now
+                    </button>
+                </form>
+                <a href="{{ $orderLink }}" target="_blank" rel="noopener" class="btn-press flex h-[54px] flex-1 items-center justify-center gap-2.5 rounded-[13px] border border-brand-border bg-brand-surface px-[22px] text-[15px] font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent sm:min-w-[200px] sm:flex-none">
                     <x-icon.whatsapp class="size-[19px]" />{{ __('site.order') }}
                 </a>
-                <a href="{{ $chatLink }}" target="_blank" rel="noopener" class="btn-press flex h-[54px] flex-1 items-center justify-center rounded-[13px] border border-brand-border bg-brand-surface px-[22px] text-[15px] font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent sm:flex-none">{{ __('site.pd_chat') }}</a>
+                <a href="{{ $chatLink }}" target="_blank" rel="noopener" class="btn-press flex h-[54px] flex-1 items-center justify-center rounded-[13px] border border-brand-border bg-brand-surface px-[22px] text-[15px] font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent sm:min-w-[200px] sm:flex-none">{{ __('site.pd_chat') }}</a>
             </div>
 
             <div class="mt-[34px] border-t border-brand-border pt-[26px]">

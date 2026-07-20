@@ -67,7 +67,7 @@ class Product extends Model
      */
     public function priceLabel(): string
     {
-        return '৳'.Digits::localize($this->price);
+        return '$'.Digits::localize($this->price);
     }
 
     /**
